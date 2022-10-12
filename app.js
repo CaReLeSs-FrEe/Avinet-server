@@ -5,7 +5,7 @@ const dirtyRoutes = require("./routes/dirty.routes");
 app.use("/api", dirtyRoutes);
 
 app.get("/", (req, res, next) => {
-  res.send("whats uppppppp");
+  res.send("whats uppppp");
 });
 
 app.listen("6969", () => {
