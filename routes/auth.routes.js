@@ -23,7 +23,17 @@ router.post("/signup", (req, res) => {
     password: hashedPassword,
     accountRoll,
   })
-    .then((createdUser) => res.json({ message: createdUser }))
+    .then((createdUser) => {
+      res.json({
+        firstName: createdUser.firstName,
+        lastName: createdUser.lastName,
+        email: createdUser.email,
+        accountRoll: createdUser.accountRoll,
+        city: createdUser.city,
+        state: createdUser.state,
+        _id: createdUser._id,
+      });
+    })
     .catch((err) => console.log(err));
 });
 
@@ -33,15 +43,22 @@ router.post("/login", (req, res) => {
     .then((foundUser) => {
       if (!foundUser) {
         res.json({ err: "Invalid" });
-        return;
       }
-      console.log(process.env.TOKEN_SECRET);
       const validPass = bcrypt.compareSync(password, foundUser.password);
       if (!validPass) {
         res.json({ err: "Invalid" });
         return;
       }
-      const payload = { email: foundUser, _id: foundUser._id };
+      console.log(foundUser)
+      const payload = {
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        email: foundUser.email,
+        accountRoll: foundUser.accountRoll,
+        city: foundUser.city,
+        state: foundUser.state,
+        _id: foundUser._id,
+      };
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
         expiresIn: "24h",
         algorithm: "HS256",
@@ -64,8 +81,13 @@ router.delete("/user", isAuthenticated, async (req, res) => {
     await UserLogin.deleteOne({ email, password });
     // todo: need to perform some invalidation of the auth token
   } catch (e) {
-    res.json({ error: e} )
+    res.json({ error: e });
   }
+});
+
+router.get("/verify", isAuthenticated, async (req, res) => {
+  console.log(req.payload)
+  res.json(req.payload);
 });
 
 module.exports = router;

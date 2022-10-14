@@ -8,6 +8,13 @@ const EmployeeSchema = new Schema({
   empId: {
     type: String,
     default: () => nanoid()
+  }
 });
 
 const Employee = model('Employee', schema);
+
+
+
+
+
+
