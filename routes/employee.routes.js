@@ -6,12 +6,20 @@ const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 const saltRounds = 10;
 
-// get company profile
-router.get("/:company", (req, res, next) => {
+// get employee profile
+router.get("/:employee", (req, res, next) => {
     // return the company profile
   console.log("yuppppp front page");
   res.send("OK front page");
 });
+
+// update employee profile
+router.put("/:employee", (req, res, next) => {
+    // return the company profile
+  console.log("yuppppp front page");
+  res.send("OK front page");
+});
+
 
 
 
