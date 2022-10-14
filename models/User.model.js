@@ -7,6 +7,8 @@ const validateEmail = (email) => emailRegex.test(email);
 const UserLoginSchema = new Schema({
   firstName: String,
   lastName: String,
+  phone: String,
+  mobile: String,
   city: String,
   state: String,
   zip: Number,

@@ -14,14 +14,14 @@ const app = express();
 const cors = require("cors");
 
 mongoose
-  .connect(process.env.MONGDB_URI)
+  .connect(process.env.MONGODB_URI)
   .then((connectObject) => {
     console.log(`ready for lift off ${connectObject.connections[0].name}`);
   })
   .catch((err) => console.log(err));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.FRONTEND_URL],
   })
 );
 // require('./config')(config);

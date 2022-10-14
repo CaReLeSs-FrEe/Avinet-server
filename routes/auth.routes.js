@@ -12,7 +12,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { firstName, lastName, email, password, accountRoll } = req.body;
+  const { firstName, lastName, email, password, accountRoll, city, state, zip } = req.body;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -22,6 +22,11 @@ router.post("/signup", (req, res) => {
     email,
     password: hashedPassword,
     accountRoll,
+    phone,
+    mobile,
+    city,
+    state,
+    zip
   })
     .then((createdUser) => {
       res.json({
@@ -57,6 +62,9 @@ router.post("/login", (req, res) => {
         accountRoll: foundUser.accountRoll,
         city: foundUser.city,
         state: foundUser.state,
+        zip: foundUser.zip,
+        phone: foundUser.phone,
+        mobile: foundUser.mobile,
         _id: foundUser._id,
       };
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -70,6 +78,32 @@ router.post("/login", (req, res) => {
       res.json({ error: err });
     });
 });
+
+router.post('/edit', isAuthenticated, (req, res, next) => {
+  console.log(req.body)
+  UserLogin.findByIdAndUpdate(req.payload._id, req.body, { new: true })
+    .then(foundUser => {
+      console.log(foundUser)
+      const payload = {
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        email: foundUser.email,
+        accountRoll: foundUser.accountRoll,
+        city: foundUser.city,
+        state: foundUser.state,
+        zip: foundUser.zip,
+        phone: foundUser.phone,
+        mobile: foundUser.mobile,
+        _id: foundUser._id,
+      };
+      const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+        expiresIn: "24h",
+        algorithm: "HS256",
+      });
+      res.json({ authToken });
+    })
+    .catch(err => res.status(500).json({ error : 'failed to update'}))
+})
 
 router.post("/logout", isAuthenticated, (req, res) => {
   // todo: need to perform some invalidation of the auth token
