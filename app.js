@@ -53,8 +53,8 @@ app.use("/company", companyRoutes);
 
 require("./error-handling")(app);
 
-app.listen("6969", () => {
-  console.log("hey lets get dirty on 3000!");
+app.listen(process.env.PORT, () => {
+  console.log("hey lets get dirty on " + process.env.PORT);
 });
 
 module.exports = app;
