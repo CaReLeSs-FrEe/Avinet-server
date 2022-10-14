@@ -12,7 +12,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { firstName, lastName, email, password, accountRoll, city, state, zip } = req.body;
+  const { firstName, lastName, email, password, accountRoll, city, state, zip, phone, mobile } = req.body;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
